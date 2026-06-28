@@ -186,15 +186,10 @@ _ •
 ;;─────────────────────────────
 ;; Nav layer
 
-#|
-      C-x C-c C-v         ↖ ▲ ↘	   ⌫
-⭾   ‹❖ ‹⎇ ‹⎈ 🔉 🔊     ◀ ▼ ▶ Cw ↩
-OS⇧  ‹⎈ ralt 🔇           ⭾ ␣ ␡  OS⇧	
-                           layerlock
-                           
-    C-x C-c C-v           ↖ ▲ ↘	   ⌫
-⭾    🔇  🔉  🔊             ◀ ▼ ▶ Cw ↩
-OS⇧  ‹⎈ ‹⎇ ‹❖ ralt        esc ⭾ ␣ ␡  OS⇧	
+#|                         
+      C-x C-c C-v         ↖ ▲ ↘    ⌫
+⭾    🔇  🔉  🔊         ◀ ▼ ▶ Cw ↩
+OS⇧  ‹⎈ ‹⎇ ‹❖ ralt    esc ⭾ ␣ ␡  OS⇧	
        layerlock                    
 |#
 
