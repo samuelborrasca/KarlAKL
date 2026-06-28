@@ -1,6 +1,6 @@
 # KarlAKL
 
-Karl is an angle-modded alternate keyboard layout for ISO roswtag keyboards created by Turtlyn, very similar to her other layout Neon: https://codeberg.org/StrawberryTurtle/neon 
+Karl is an angle-modded Kanata alternate keyboard layout for ISO roswtag keyboards created by Turtlyn, very similar to her other layout Neon: https://codeberg.org/StrawberryTurtle/neon 
 
 It includes mirrored Y and one shot shift keys, and a repeat key. 
 
