@@ -1,0 +1,355 @@
+;;karl layout for rowstag by turtlyn
+;;mirrored y keys & repeat key with no magic rules
+;;OS pinky shift & bottom row mods
+
+(defcfg
+process-unmapped-keys yes
+concurrent-tap-hold yes
+chords-v2-min-idle 20
+windows-altgr cancel-lctl-press
+)
+
+;; idk how useful defsrc really is here since i'm using deflayermap
+(defsrc 
+     q   w   e   r   t   y   u   i   o   p   [   ] 
+  ⇪  a   s   d   f   g   h   j   k   l   ;   '   \  ↩
+  ‹⇧ z   x   c   v   b   n   m   ,   .   /   ⇧›
+                      ␣          ralt 
+)
+
+;;──────────────────────────────────────────────────────────────────────────────
+;;Layers
+
+#| Top layer
+    z w d g y    y j u o f ⌫
+⭾   n c t s v    x r i a h ↩
+OS⇧  p m b * q    k l , . OS⇧
+            ␣     e
+      
+|#
+
+;;─────────────────────────────
+;; Top layer
+
+;;if you were to press both y keys in sequence and they overlap, only one y is output. i decided not to fix this since there's a repeat key & yy is pretty nonexistent.
+
+(deflayermap (top)
+mlft mlft ;; so mods would work kinda like qmk's speculative hold when clicking/dragging
+;;upper row
+;;left
+q z	
+w w	
+e d	
+r g	
+t y
+;;right
+u y
+i j
+o u
+p o
+[ f
+] ⌫
+
+;;home row
+;;left
+⇪ ⭾
+a n
+s c
+d t
+f s
+g v
+;;right
+j x
+k r
+l i
+; a
+' h
+\ ↩
+
+;;bottom row
+;;left
+‹⇧ (one-shot-release 2000 ‹⇧)
+102d (one-shot-release 2000 ‹⇧) ;; this is the small key between left shift and Z on ISO keyboards, also called lsgt 
+z @p
+x @m
+c @b
+v @rpt
+b q
+;;right
+m @k
+, @l
+. @,
+/ @.
+⇧› (one-shot-release 2000 ⇧›)
+
+
+;;thumb keys
+␣ @␣
+ralt @e
+
+;;makes the unused alpha keys output nothing instead of the original key, but keeps all other keys like numrow and fn working normally
+_ •
+)
+
+#|
+if you need to add any combos use this syntax
+
+(defvirtualkeys j j)
+(defchordsv2 
+	($q $k) (on-press tap-vkey j) $chord-timeout all-released (sym extend)
+)
+|#
+
+
+;;─────────────────────────────
+;; Other layers
+
+;; General helpers
+
+;;layer switch to top layer as virtual key so it can be auto triggered after idle
+(defvirtualkeys toplayer (layer-switch top))
+
+;;locking any layer will auto switch back to top layer after 30s idle, adjust to taste
+;;pressing again after locking to a layer will switch back to top layer
+(deftemplate layerlock (layer)
+	(switch 
+		((base-layer top)) (multi (layer-switch $layer) (on-physical-idle 30000 tap-vkey toplayer)) break
+		() (on-press tap-vkey toplayer) break 
+	)
+)
+
+;;─────────────────────────────
+;; Sym layer as tap hold on left thumb (space), includes numbers and cut copy paste
+
+#|          
+  C-x C-c C-v	  `~ ; ' \	⌫
+⭾   6 7 8 9 0     [ ] - = / ↩ 
+OS⇧ 1 2 3 4 5   esc ⭾ ␣ ␡ OS⇧
+                  layerlock              
+|#
+
+
+(defalias symlock (t! layerlock sym))
+(deflayermap (sym)
+mlft mlft
+;;upper row
+;;left
+w C-x
+e C-c	
+r C-v	
+;;right
+i `
+o ;
+p '
+[ \
+] ⌫
+
+;;home row
+;;left
+⇪ ⭾
+a 6
+s 7
+d 8
+f 9
+g 0
+;;right
+j [
+k ]
+l -
+; =
+' /
+\ ↩
+
+;;bottom row
+;;left
+‹⇧ (one-shot-release 2000 ‹⇧)
+102d (one-shot-release 2000 ‹⇧)
+z @1
+x @2
+c @3
+v @4
+b 5
+;;right
+m @esc
+, @⭾
+. @␣›
+/ @␡
+⇧› (one-shot-release 2000 ⇧›)
+
+;;thumb keys
+ralt @symlock
+
+;;unused keys
+_ •
+)
+
+;;─────────────────────────────
+;; Nav layer
+
+#|
+      C-x C-c C-v         ↖ ▲ ↘	   ⌫
+⭾   ‹❖ ‹⎇ ‹⎈ 🔉 🔊     ◀ ▼ ▶ Cw ↩
+OS⇧  ‹⎈ ralt 🔇           ⭾ ␣ ␡  OS⇧	
+                           layerlock
+                           
+    C-x C-c C-v           ↖ ▲ ↘	   ⌫
+⭾    🔇  🔉  🔊             ◀ ▼ ▶ Cw ↩
+OS⇧  ‹⎈ ‹⎇ ‹❖ ralt        esc ⭾ ␣ ␡  OS⇧	
+       layerlock                    
+|#
+
+(defalias navlock (t! layerlock nav))
+(defalias Cw (caps-word-toggle 10000))
+
+(deflayermap (nav)
+mlft mlft
+;;upper row
+;;left
+w C-x
+e C-c
+r C-v
+;;right
+i ↖
+o ▲
+p ↘
+] ⌫
+
+;;home row
+;;left
+⇪ ⭾
+s 🔇
+d 🔉
+f 🔊
+;;right
+k ◀
+l ▼
+; ▶
+' @Cw
+\ ↩
+
+;;bottom row
+;;left
+‹⇧ (one-shot-release 2000 ‹⇧)
+102d (one-shot-release 2000 ‹⇧)
+z ‹⎈
+x ‹⎇
+c ‹❖
+v ralt
+;;right
+m esc
+, ⭾
+. ␣
+/ ␡
+⇧› (one-shot-release 2000 ⇧›)
+
+;;thumb keys
+␣ @navlock
+
+;;unused keys
+_ •
+)
+
+;;──────────────────────────────────────────────────────────────────────────────
+;;Variables
+
+(defvar
+ tap-timeout 200
+ hold-timeout 250
+ chord-timeout 30
+
+z q
+w w
+d e
+g r
+y- t
+-y u
+j i
+u o
+o p
+f ]
+
+n a
+c s
+t d
+s f
+v g
+x j
+r k
+i l
+a ;
+h '
+
+p z
+m x
+b c
+rpt v
+q b
+k m
+l ,
+, .
+. /
+␣ ␣
+e ralt
+
+lkeys ( 
+ $z $w $d $g $y- 
+ $n $c $t $s $v
+ $p $m $b $rpt $q 
+       $␣
+ )
+rkeys (
+ $-y $j $u $o $f
+ $x $r $i $a $h
+ $k $l $, $. 
+    $e
+ )
+)
+
+;;──────────────────────────────────────────────────────────────────────────────
+;;Home row mods & layers
+
+(deftemplate flowtap (flow tap)
+  (switch 
+    ((key-timing 3 less-than 450)) $flow break
+    () $tap break
+  )
+)
+
+(deftemplate mod (char mod keys)
+  (defalias $char (t! flowtap 
+  				(tap-hold-release-keys $tap-timeout $hold-timeout $char $mod $keys)
+  				;;while typing (flow mode = 3 keys pressed in the last 450ms), any key within $keys pressed within timeout will immediately trigger tap action
+  				
+  				(tap-hold-release $tap-timeout $hold-timeout $char $mod)
+  				;;while not in flow mode, any key pressed and released before timeout will trigger hold action
+  			   )
+   )
+)
+
+;;top layer
+;;left side
+(t! mod p	‹⎈	$lkeys)
+(t! mod m	‹⎇	$lkeys)
+(t! mod b	‹❖	$lkeys)
+(t! mod rpt ralt	$lkeys)
+(t! mod ␣	(layer-while-held sym) $lkeys)
+
+;;right side
+(t! mod .	⎈›	$rkeys)
+(t! mod ,	‹⎇	$rkeys)
+(t! mod l	❖›	$rkeys)
+(t! mod k 	ralt   $rkeys)
+(t! mod e	(layer-while-held nav) $rkeys)
+
+;;sym layer
+;;left side
+(defalias 1 (tap-hold-release $tap-timeout $hold-timeout 1 ‹⎈))
+(defalias 2 (tap-hold-release $tap-timeout $hold-timeout 2 ‹⎇))
+(defalias 3 (tap-hold-release $tap-timeout $hold-timeout 3 ‹❖))
+(defalias 4 (tap-hold-release $tap-timeout $hold-timeout 4 ralt))
+
+;;right side
+(defalias ␡ (tap-hold-release $tap-timeout $hold-timeout ␡ ⎈›))
+(defalias ␣› (tap-hold-release $tap-timeout $hold-timeout ␣ ‹⎇))
+(defalias ⭾ (tap-hold-release $tap-timeout $hold-timeout ⭾ ❖›))
+(defalias esc (tap-hold-release $tap-timeout $hold-timeout esc ralt))
