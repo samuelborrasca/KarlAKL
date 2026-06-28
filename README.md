@@ -1,8 +1,8 @@
 # KarlAKL
 
-Karl is an angle-modded Kanata alternate keyboard layout for ISO rowstag keyboards created by Turtlyn, very similar to her other layout Neon: https://codeberg.org/StrawberryTurtle/neon 
+Karl is an angle-modded Kanata alternate keyboard layout for ISO rowstag keyboards created by Turtlyn, similar to her other layout Neon: https://codeberg.org/StrawberryTurtle/neon 
 
-It includes mirrored Y and one shot shift keys, and a repeat key. 
+It belongs to the new "hair" family of layouts, where the right homerow consists of the keys `riah`. It also includes mirrored Y, one shot shift keys, and a repeat key. 
 
 Turtlyn provided me with a nokwts-fingermap version, which is my preferred fingermap.
 
