@@ -1,6 +1,6 @@
-;;karl layout for rowstag by turtlyn
+;;karl layout (nokwts version) for rowstag by turtlyn
 ;;mirrored y keys & repeat key with no magic rules
-;;OS pinky shift & bottom row mods
+;;OS shift on pinkies & home row mods
 
 (defcfg
 process-unmapped-keys yes
@@ -11,7 +11,7 @@ windows-altgr cancel-lctl-press
 
 ;; idk how useful defsrc really is here since i'm using deflayermap
 (defsrc 
-     q   w   e   r   t   y   u   i   o   p   [   ] 
+  ⭾ q   w   e   r   t   y   u   i   o   p   [   ] 
   ⇪  a   s   d   f   g   h   j   k   l   ;   '   \  ↩
   ‹⇧ z   x   c   v   b   n   m   ,   .   /   ⇧›
                       ␣          ralt 
@@ -21,9 +21,9 @@ windows-altgr cancel-lctl-press
 ;;Layers
 
 #| Top layer
-    z w d g y    y j u o f ⌫
-⭾   n c t s v    x r i a h ↩
-OS⇧  p m b * q    k l , . OS⇧
+⭾  z p d m y    y j u o f ⌫
+OS⇧ n c t s b    x r i a h OS⇧
+     q w g *      k l , . ↩
             ␣     e
       
 |#
@@ -37,10 +37,11 @@ OS⇧  p m b * q    k l , . OS⇧
 mlft mlft ;; so mods would work kinda like qmk's speculative hold when clicking/dragging
 ;;upper row
 ;;left
+⭾ ⭾
 q z	
-w w	
+w p	
 e d	
-r g	
+r m	
 t y
 ;;right
 u y
@@ -52,35 +53,33 @@ p o
 
 ;;home row
 ;;left
-⇪ ⭾
-a n
-s c
-d t
-f s
-g v
+⇪ (one-shot-release 2000 ‹⇧)
+a @n
+s @c
+d @t
+f @s
+g b
 ;;right
 j x
-k r
-l i
-; a
-' h
-\ ↩
+k @r
+l @i
+; @a
+' @h
+\ (one-shot-release 2000 ‹⇧)
 
 ;;bottom row
 ;;left
-‹⇧ (one-shot-release 2000 ‹⇧)
-102d (one-shot-release 2000 ‹⇧) ;; this is the small key between left shift and Z on ISO keyboards, also called lsgt 
-z @p
-x @m
-c @b
-v @rpt
-b q
+102d XX ;; this is the small key between left shift and Z on ISO keyboards, also called lsgt 
+z q
+x w
+c g
+v rpt
 ;;right
-m @k
-, @l
-. @,
-/ @.
-⇧› (one-shot-release 2000 ⇧›)
+m k
+, l
+. ,
+/ .
+⇧› ↩
 
 
 ;;thumb keys
@@ -91,15 +90,23 @@ ralt @e
 _ •
 )
 
-#|
-if you need to add any combos use this syntax
-
-(defvirtualkeys j j)
+(defvirtualkeys v v)
 (defchordsv2 
-	($q $k) (on-press tap-vkey j) $chord-timeout all-released (sym extend)
+	($c $t) (on-press tap-vkey v) $chord-timeout all-released (sym nav)
+	($p $m) C-x $chord-timeout all-released ()
+	($p $d) C-c $chord-timeout all-released ()
+	($d $m) C-v $chord-timeout all-released ()
+	($. $↩) (switch
+			((base-layer qwerty)) (layer-switch top) break
+			() (layer-switch qwerty) break
+		   ) $chord-timeout all-released ()
 )
-|#
 
+;;─────────────────────────────
+;; QWERTY layer
+;; the / + rsft qwerty position combo (. + ↩ on the top layer) will toggle between the qwerty layer and the top layer.
+
+(deflayermap (qwerty))
 
 ;;─────────────────────────────
 ;; Other layers
@@ -119,13 +126,13 @@ if you need to add any combos use this syntax
 )
 
 ;;─────────────────────────────
-;; Sym layer as tap hold on left thumb (space), includes numbers and cut copy paste
+;; Sym layer as tap hold on left thumb (space), includes numbers
 
 #|          
-  C-x C-c C-v	  `~ ; ' \	⌫
-⭾   6 7 8 9 0     [ ] - = / ↩ 
-OS⇧ 1 2 3 4 5   esc ⭾ ␣ ␡ OS⇧
-                  layerlock              
+⭾  6 7 8 9 0        ` ; ' \ ⌫
+OS⇧ 1 2 3 4 5     [ ] - = / OS⇧ 
+                  esc ⭾ ␣ ␡ ↩
+                 layerlock              
 |#
 
 
@@ -134,9 +141,12 @@ OS⇧ 1 2 3 4 5   esc ⭾ ␣ ␡ OS⇧
 mlft mlft
 ;;upper row
 ;;left
-w C-x
-e C-c	
-r C-v	
+⭾ ⭾ 
+q 6
+w 7
+e 8	
+r 9
+t 0	
 ;;right
 i `
 o ;
@@ -146,35 +156,29 @@ p '
 
 ;;home row
 ;;left
-⇪ ⭾
-a 6
-s 7
-d 8
-f 9
-g 0
+⇪ (one-shot-release 2000 ‹⇧)
+a @1
+s @2
+d @3
+f @4
+g 5
 ;;right
 j [
-k ]
-l -
-; =
-' /
-\ ↩
+k @]
+l @-
+; @=
+' @/
+\ (one-shot-release 2000 ‹⇧)
 
 ;;bottom row
 ;;left
-‹⇧ (one-shot-release 2000 ‹⇧)
-102d (one-shot-release 2000 ‹⇧)
-z @1
-x @2
-c @3
-v @4
-b 5
+102d XX
 ;;right
-m @esc
-, @⭾
-. @␣›
-/ @␡
-⇧› (one-shot-release 2000 ⇧›)
+m esc
+, ⭾
+. ␣
+/ ␡
+⇧› ↩
 
 ;;thumb keys
 ralt @symlock
@@ -186,10 +190,11 @@ _ •
 ;;─────────────────────────────
 ;; Nav layer
 
-#|                         
-      C-x C-c C-v         ↖ ▲ ↘    ⌫
-⭾    🔇  🔉  🔊         ◀ ▼ ▶ Cw ↩
-OS⇧  ‹⎈ ‹⎇ ‹❖ ralt    esc ⭾ ␣ ␡  OS⇧	
+#|                           
+                              
+⭾    🔇  🔉  🔊            ↖ ▲ ↘	 ⌫ 
+OS⇧  ‹⎈ ‹⎇ ‹❖ ralt         ◀  ▼ ▶ Cw OS⇧ 
+					esc ⭾ ␣  ␡   ↩
        layerlock                    
 |#
 
@@ -200,9 +205,10 @@ OS⇧  ‹⎈ ‹⎇ ‹❖ ralt    esc ⭾ ␣ ␡  OS⇧
 mlft mlft
 ;;upper row
 ;;left
-w C-x
-e C-c
-r C-v
+⭾ ⭾
+w 🔇
+e 🔉
+r 🔊
 ;;right
 i ↖
 o ▲
@@ -211,31 +217,27 @@ p ↘
 
 ;;home row
 ;;left
-⇪ ⭾
-s 🔇
-d 🔉
-f 🔊
+⇪ (one-shot-release 2000 ‹⇧)
+a ‹⎈
+s ‹⎇
+d ‹❖
+f ralt
 ;;right
 k ◀
 l ▼
 ; ▶
 ' @Cw
-\ ↩
+\ (one-shot-release 2000 ‹⇧)
 
 ;;bottom row
 ;;left
-‹⇧ (one-shot-release 2000 ‹⇧)
-102d (one-shot-release 2000 ‹⇧)
-z ‹⎈
-x ‹⎇
-c ‹❖
-v ralt
+102d XX
 ;;right
 m esc
 , ⭾
 . ␣
 / ␡
-⇧› (one-shot-release 2000 ⇧›)
+⇧› ↩
 
 ;;thumb keys
 ␣ @navlock
@@ -253,9 +255,9 @@ _ •
  chord-timeout 30
 
 z q
-w w
+p w
 d e
-g r
+m r
 y- t
 -y u
 j i
@@ -267,29 +269,29 @@ n a
 c s
 t d
 s f
-v g
+b g
 x j
 r k
 i l
 a ;
 h '
 
-p z
-m x
-b c
+q z
+w x
+g c
 rpt v
-q b
 k m
 l ,
 , .
 . /
+↩ rsft ;;only defined this so i can use $↩ in a combo
 ␣ ␣
 e ralt
 
 lkeys ( 
- $z $w $d $g $y- 
- $n $c $t $s $v
- $p $m $b $rpt $q 
+ $z $p $d $m $y- 
+ $n $c $t $s $b
+ $q $w $g $rpt 
        $␣
  )
 rkeys (
@@ -323,17 +325,17 @@ rkeys (
 
 ;;top layer
 ;;left side
-(t! mod p	‹⎈	$lkeys)
-(t! mod m	‹⎇	$lkeys)
-(t! mod b	‹❖	$lkeys)
-(t! mod rpt ralt	$lkeys)
+(t! mod n	‹⎈	$lkeys)
+(t! mod c	‹⎇	$lkeys)
+(t! mod t	‹❖	$lkeys)
+(t! mod s ralt	$lkeys)
 (t! mod ␣	(layer-while-held sym) $lkeys)
 
 ;;right side
-(t! mod .	⎈›	$rkeys)
-(t! mod ,	‹⎇	$rkeys)
-(t! mod l	❖›	$rkeys)
-(t! mod k 	ralt   $rkeys)
+(t! mod h	⎈›	$rkeys)
+(t! mod a	‹⎇	$rkeys)
+(t! mod i	❖›	$rkeys)
+(t! mod r 	ralt   $rkeys)
 (t! mod e	(layer-while-held nav) $rkeys)
 
 ;;sym layer
@@ -344,7 +346,7 @@ rkeys (
 (defalias 4 (tap-hold-release $tap-timeout $hold-timeout 4 ralt))
 
 ;;right side
-(defalias ␡ (tap-hold-release $tap-timeout $hold-timeout ␡ ⎈›))
-(defalias ␣› (tap-hold-release $tap-timeout $hold-timeout ␣ ‹⎇))
-(defalias ⭾ (tap-hold-release $tap-timeout $hold-timeout ⭾ ❖›))
-(defalias esc (tap-hold-release $tap-timeout $hold-timeout esc ralt))
+(defalias / (tap-hold-release $tap-timeout $hold-timeout / ⎈›))
+(defalias = (tap-hold-release $tap-timeout $hold-timeout = ‹⎇))
+(defalias - (tap-hold-release $tap-timeout $hold-timeout - ❖›))
+(defalias ] (tap-hold-release $tap-timeout $hold-timeout ] ralt))
