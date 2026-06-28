@@ -13,4 +13,4 @@ The letter V, as well as shortcuts for cut, copy and paste are provided through 
 A toggle for the qwerty layer is also available through the bottom right pinky + ring combo.
 
 
-![Karl layout](karlrowstag.png)
+![Karl layout](karlrowstag2.png)
