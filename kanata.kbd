@@ -74,6 +74,7 @@ z q
 x w
 c g
 v rpt
+b v
 ;;right
 m k
 , l
@@ -90,9 +91,7 @@ ralt @e
 _ •
 )
 
-(defvirtualkeys v v)
 (defchordsv2 
-	($c $t) (on-press tap-vkey v) $chord-timeout all-released (sym nav)
 	($p $m) C-x $chord-timeout all-released ()
 	($p $d) C-c $chord-timeout all-released ()
 	($d $m) C-v $chord-timeout all-released ()
@@ -280,6 +279,7 @@ q z
 w x
 g c
 rpt v
+v b
 k m
 l ,
 , .
@@ -291,7 +291,7 @@ e ralt
 lkeys ( 
  $z $p $d $m $y- 
  $n $c $t $s $b
- $q $w $g $rpt 
+ $q $w $g $rpt $v
        $␣
  )
 rkeys (
